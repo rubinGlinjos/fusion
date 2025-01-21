@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="row">
+        <!-- Form Card Column -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Manager Insert Form</h4>
+
+                    {% if messages %}
+                    <div class="alert alert-success" id="success-message">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            var successMessage = document.getElementById('success-message');
+                            if (successMessage) {
+                                successMessage.style.display = 'none';
+                            }
+                        }, 2000);
+                    </script>
+                    {% endif %}
+
+                    <form class="forms-sample" method="post" action="{% url 'adminAction' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Name</label>
+                            <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Enter the name" name="name" value="{{ datas.name|default:'' }}">
+                            {% if errors.name %}
+                                <div class="text-danger">{{ errors.name }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">User Name</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter the username" name="username" value="{{ datas.username|default:'' }}">
+                            {% if errors.username %}
+                                <div class="text-danger">{{ errors.username }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="exampleInputConfirmPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Enter the password" name="Password" value="{{ datas.Password|default:'' }}">
+                            {% if errors.Password %}
+                                <div class="text-danger">{{ errors.Password }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card Column -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Managers</div>
+                </div>
+                <div class="card-body">
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">SL No</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">User Name</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in Admins %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>  <!-- Adding SL No -->
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.user_name }}</td> 
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
